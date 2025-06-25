@@ -58,7 +58,12 @@ app.use('/api/greetings', greetingsRouter);
 
 const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 
+const requestLogger = require('./middleware/logger');
+app.use(requestLogger);
+
+
 // Các routes ở phía trên...
 
 app.use(notFoundHandler); // Bắt route không tồn tại
 app.use(errorHandler);    // Bắt các lỗi phát sinh trong hệ thống
+

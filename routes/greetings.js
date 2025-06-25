@@ -17,6 +17,35 @@ router.get('/', (req, res) => {
   }
 });
 
+// GET all greetings with optional filtering
+router.get('/', (req, res) => {
+  try {
+    let greetings = readData();
+
+    // Filter by language if specified
+    if (req.query.language) {
+      greetings = greetings.filter(g =>
+        g.language.toLowerCase().includes(req.query.language.toLowerCase())
+      );
+    }
+
+    // Filter by formal if specified
+    if (req.query.formal !== undefined) {
+      const formal = req.query.formal === 'true';
+      greetings = greetings.filter(g => g.formal === formal);
+    }
+
+    res.json({
+      success: true,
+      count: greetings.length,
+      data: greetings
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve greetings' });
+  }
+});
+
+
 // GET greeting by ID
 router.get('/:id', (req, res) => {
   try {
